@@ -29,7 +29,6 @@ function initTheme() {
 }
 
 
-
 function initNav() {
   const menuToggle = document.getElementById("menu-toggle");
   if (!menuToggle) return;
@@ -45,7 +44,6 @@ function initNav() {
     });
   });
 }
-
 
 
 function initReveal() {
@@ -71,7 +69,6 @@ function initReveal() {
 
   revealEls.forEach((el) => observer.observe(el));
 }
-
 
 
 const CONTACT_TO = "ritikpatel@asu.edu";
@@ -192,13 +189,11 @@ function showFormToast(message) {
 }
 
 
-
 function initYear() {
   const yearEl = document.getElementById("year");
   if (!yearEl) return;
   yearEl.textContent = new Date().getFullYear();
 }
-
 
 
 function initNavHighlight() {
@@ -239,7 +234,6 @@ function initNavHighlight() {
 }
 
 
-
 function initCopyEmail() {
   const toast = document.getElementById("copy-toast");
   const links = document.querySelectorAll(".copy-email-link");
@@ -266,49 +260,32 @@ function initCopyEmail() {
 }
 
 
+function initResumeDownload() {
+  const link = document.getElementById("resume-download");
+  if (!link) return;
 
-const RESUME_FILES = {
-  da: {
-    src: "assets/RitikPatel_Resume_DA.pdf#zoom=90",
-    download: "assets/RitikPatel_Resume_DA.pdf",
-    title: "Ritik Rameshwar Patel – Data Analytics Resume (PDF)",
-    label: "Download Data Analytics Resume (PDF)",
-  },
-  ml: {
-    src: "assets/RitikPatel_Resume_MLAI.pdf#zoom=90",
-    download: "assets/RitikPatel_Resume_MLAI.pdf",
-    title: "Ritik Rameshwar Patel – ML/AI Resume (PDF)",
-    label: "Download ML / AI Resume (PDF)",
-  },
-};
-
-function initResumeToggle() {
-  const toggleBtns = document.querySelectorAll(".resume-toggle-btn");
-  const viewer = document.getElementById("resume-viewer");
-  const downloadLink = document.getElementById("resume-download");
-  if (!toggleBtns.length || !viewer || !downloadLink) return;
-
-  toggleBtns.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const key = btn.getAttribute("data-resume");
-      const resume = RESUME_FILES[key];
-      if (!resume) return;
-
-      toggleBtns.forEach((b) => {
-        const isActive = b === btn;
-        b.classList.toggle("active", isActive);
-        b.setAttribute("aria-selected", isActive ? "true" : "false");
-      });
-
-      viewer.src = resume.src;
-      viewer.title = resume.title;
-      downloadLink.href = resume.download;
-      downloadLink.querySelector("span").textContent = resume.label;
-    });
+  link.addEventListener("click", async (event) => {
+    event.preventDefault();
+    const url = link.getAttribute("href");
+    const filename = link.getAttribute("download") || "RitikPatel_Resume.pdf";
+    try {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error("HTTP " + response.status);
+      const blob = new Blob([await response.blob()], { type: "application/pdf" });
+      const objectUrl = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = objectUrl;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
+    } catch (err) {
+      // Fallback: open in a new tab so the portfolio page stays open.
+      window.open(url, "_blank", "noopener");
+    }
   });
 }
-
-
 
 document.addEventListener("DOMContentLoaded", () => {
   initTheme();
@@ -318,6 +295,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initContactForm();
   initYear();
   initCopyEmail();
-  initResumeToggle();
+  initResumeDownload();
 });
 

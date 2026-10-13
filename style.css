@@ -1236,38 +1236,6 @@ html[data-theme="dark"] .client-tag {
     gap: 1.25rem;
 }
 
-.resume-toggle {
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-}
-
-.resume-toggle-btn {
-    border: 1px solid rgba(148, 163, 184, 0.6);
-    background: var(--color-surface);
-    color: var(--color-text-muted);
-    border-radius: var(--radius-full);
-    padding: 0.55rem 1.25rem;
-    font-size: 0.9rem;
-    font-weight: 500;
-    font-family: inherit;
-    cursor: pointer;
-    transition: all 0.18s ease;
-}
-
-.resume-toggle-btn:hover {
-    border-color: var(--color-primary);
-    color: var(--color-text);
-}
-
-.resume-toggle-btn.active {
-    background: linear-gradient(135deg, var(--color-primary), #b91c1c);
-    border-color: transparent;
-    color: #f9fafb;
-    box-shadow: var(--shadow-subtle);
-}
-
 .resume-viewer-wrapper {
     width: 90%;
     max-width: 100%;
